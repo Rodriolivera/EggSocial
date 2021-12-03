@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Rodrigo Olivera, Cristian Solis, Celeste Miranda y Astor Vargas">
+  <meta name="description" content="">
+  <link rel="shortcut icon" th:href="@{/iconos/iconoEgg.svg}" type="image/x-icon">
+  <title>Fragments</title>
+</head>
+
+<body>
+  <!-- INICIO HEADER -->
+  <div th:fragment="header">
+    <header class="sticky-top" style="background-color: #fff;">
+      <nav class="navbar navbar-expand-md navbar-light">
+        <div class="container">
+          <a class="navbar-brand btn btn-sm" th:href="@{/}">
+            &nbsp; <img th:src="@{/iconos/eggsocial.svg}" alt="EGG" width="160">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHome" aria-controls="navbarHome" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarHome">
+            <form class="d-flex mx-auto " sec:authorize="hasRole('USUARIO')" th:action="@{/perfil/buscados}"
+                method="GET">
+                <input class="form-control me-2" type="text" name="nombreYApellido"
+                    placeholder="nombre y apellido" aria-label="Search">
+                <button class="btn btn-outline-success px-1 py-0" type="submit"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="20" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg></button>
+            </form>
+            <form class="d-flex mx-auto" sec:authorize="hasRole('ADMIN')"
+                th:action="@{/perfil/buscadosAdmin}" method="GET">
+                <input class="form-control me-2" type="text" name="nombreYApellido"
+                    placeholder="nombre y apellido" aria-label="Search">
+                <button class="btn btn-outline-success px-1 py-0" type="submit"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="20" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg></button>
+            </form>
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" th:href="@{/perfil}">Perfil</a></li>
+              <li class="nav-item"><a class="nav-link" th:href="@{/}">Home </a></li>
+              <div th:if="${perfil.id}==${perfilFeed.id}">
+                <li class="nav-item"><a th:href="@{/perfil/amigos}" type="button" class="nav-link d-md-none ">Mis Amigos</a></li>
+                <li class="nav-item">
+                  <a th:href="@{/invitaciones/lista}" type="button" class="nav-link d-md-none  ">Invitaciones
+                    <p class="badge rounded-pill bg-danger">
+                      <span th:text="${cantidadInvitaciones}"></span>
+                      <span class="visually-hidden">unread messages</span>
+                    </p>
+                  </a>
+                </li>
+              </div>
+              <div class="dropdown text-end">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img th:if="${perfil.foto != null}" th:src="${perfil.foto}" alt="Perfil" width="32" height="32" id="fotoPerfil" class="rounded-circle me-2">
+                  <img th:unless="${perfil.foto != null}" th:src="@{/foto/FotoPorDefecto.jpg}" alt="mdo" width="32" height="32" id="fotoPerfil" class="rounded-circle me-2">
+                </a>
+                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                  <li><a class="dropdown-item text-capitalize" th:href="@{/perfil/editar/__${perfil.id}__}">editar perfil</a></li>
+                  <li><a class="dropdown-item text-capitalize" sec:authorize="hasRole('ADMIN')" th:href="@{/roles/crear}">Crear Rol</a></li>
+                  <li><a class="dropdown-item text-capitalize" sec:authorize="hasRole('ADMIN')" th:href="@{/roles}">Lista de Roles</a></li>
+                  <li><a class="dropdown-item text-capitalize" sec:authorize="hasRole('ADMIN')" th:href="@{/perfil/todos}">Lista de Perfiles</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-capitalize" th:href="@{/logout}">cerrar sesi&oacute;n</a></li>
+                </ul>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- FIN NAVBAR -->
+  </div>
+  <!-- FIN HEADER -->
+
+  <!-- INICIO FOOTER -->
+  <div th:fragment="footer">
+    <!-- Boton subir -->
+    <p class="flotante"><a href="#top" class="btn btn-sm btn-warning shadow">Subir</a></p>
+    <footer class="footer py-3 bg-dark fixed-bottom">
+      <div class="container d-flex justify-content-center align-items-center">
+        <p class="text-muted mb-0">&copy; <span id="anioFooter">2021</span> EggSocial</p>
+        <div>
+          <img th:src="@{/iconos/iconoEgg.svg}" alt="" class="m-0 p-0 ms-2" height="20">
+        </div>
+      </div>
+      <div class="text-center">
+        <a href="https://www.linkedin.com/in/rodrigo-olivera-/" class="btn btn-sm text-secondary" target="_blank">
+          Rodrigo Olivera <svg xmlns="http://www.w3.org/2000/svg" width="15" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/celeste-miranda/" class="btn btn-sm text-secondary" target="_blank">
+          Celeste Miranda <svg xmlns="http://www.w3.org/2000/svg" width="15" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/cristian-samuel-solis/" class="btn btn-sm text-secondary" target="_blank">
+          Cristian Sol&iacute;s <svg xmlns="http://www.w3.org/2000/svg" width="15" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/astorvargas/" class="btn btn-sm text-secondary" target="_blank">
+          Astor Vargas <svg xmlns="http://www.w3.org/2000/svg" width="15" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+        </a>
+      </div>
+    </footer>
+    <script>
+      document.getElementById('anioFooter').innerHTML = new Date().getFullYear();
+    </script>
+  </div>
+  <!-- FIN FOOTER -->
+
+  <!-- INICIO COLUMNA AMIGOS -->
+  <div th:fragment="listaAmigos">
+    <!-- AMIGOS -->
+    <div class="bg-white " >
+      <p class="pt-3 ps-3">Tus amigos</p>
+      <hr class="bg-warning" style="height: 5px;">
+      <!-- Sin amigos -->
+      <p class="text-center pb-4" th:if="${amigos.isEmpty}"> Aun no tenes amigos :´( </p>
+      <!-- Con amigos -->
+      <div class="list-group list-group-flush mx-2 mt-4" th:unless="${amigos.isEmpty()}">
+        <div class="list-group-item list-group-item-action " th:each="amigo : ${amigos}">
+          <div class="clearfix">
+            <div th:if="${amigo.foto !=null}">
+              <a th:href="@{/perfil/mostrar/__${amigo.id}__}">
+                <img th:src="${amigo.foto}" alt="Perfil" id="fotoPerfil" width="50" class="float-start">
+              </a>
+            </div>
+            <div th:unless="${perfil.foto != null}">
+              <a th:href="@{/perfil/mostrar/__${amigo.id}__}">
+                <img th:src="@{/foto/FotoPorDefecto.jpg}" alt="Perfil" id="fotoPerfil" width="50" class="float-start">
+              </a>
+            </div>
+            <div class="float-start ms-3">
+              <h5 class="mt-1 mb-0 text-capitalize me-3" th:text="|${amigo.nombre} ${amigo.apellido}|"></h5>
+              <p class="text-muted my-0" th:text="${amigo.residencia}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- RAMDON -->
+    <div class="bg-white mt-4" th:unless="${perfiles.isEmpty()}">
+      <p class="pt-3 ps-3">Gente que quiz&aacute;s conozcas</p>
+      <hr class="bg-warning" style="height: 5px;">
+      <div class="list-group list-group-flush mx-2">
+        <div class="list-group-item list-group-item-action" th:each="perfil : ${perfiles}">
+          <div class="clearfix">
+            <div th:if="${perfil.foto !=null}">
+              <a th:href="@{/perfil/mostrar/__${perfil.id}__}">
+                <img th:src="${perfil.foto}" alt="Perfil" id="fotoPerfil" width="50" class="float-start">
+              </a>
+            </div>
+            <div th:unless="${perfil.foto != null}">
+              <a th:href="@{/perfil/mostrar/__${perfil.id}__}">
+                <img th:src="@{/foto/FotoPorDefecto.jpg}" alt="Perfil" id="fotoPerfil" width="50" class="float-start">
+              </a>
+            </div>
+            <div class="float-start ms-3">
+              <h5 class="mt-1 mb-0 text-capitalize me-3" th:text="|${perfil.nombre} ${perfil.apellido}|"></h5>
+              <p class="text-muted my-0" th:text="${perfil.residencia}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- FIN COLUMNA AMIGOS -->
+
+  <!-- INICIO PERFIL HEADER -->
+  <div th:fragment="perfil-header">
+    <div class="container">
+      <!-- Fotos de portada y perfil -->
+      <div class="position-relative" style="height: 400px;">
+        <img th:src="@{/imagenes/PortadaFondo.jpg}" class="w-100 h-100" id="fotoPortadaPerfil" alt="">
+        <div class="position-absolute bottom-0 start-0 d-flex align-items-end">
+          <div th:if="${perfilFeed.foto != null}" class="">
+            <img th:src="${perfilFeed.foto}" alt="Perfil" id="fotoPerfil" class="img-fluid img-thumbnail  mt-3" width="150">
+          </div>
+          <div th:unless="${perfilFeed.foto != null}" class="">
+            <img th:src="@{/foto/FotoPorDefecto.jpg}" class="img-fluid img-thumbnail  mt-3" width="150">
+          </div>
+          <div class="">
+            <h1 class=" fs-3 ms-3 mb-4" th:text="|${perfilFeed.nombre} ${perfilFeed.apellido}|"></h1>
+          </div>
+        </div>
+      </div>
+      <!-- Botones de accion -->
+      <div class="btn-group " role="group" th:if="${perfil.id}==${perfilFeed.id}">
+        <a th:href="@{/perfil}" type="button" class=" boton btn ">Mis Publicaciones</a>
+        <a th:href="@{/perfil/amigos}" type="button" class="boton btn ">Mis Amigos</a>
+        <a th:href="@{/invitaciones/lista}" type="button" class="boton btn ">Invitaciones
+          <p class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            <span th:text="${cantidadInvitaciones}"> </span>
+            <span class="visually-hidden">unread messages</span>
+          </p>
+        </a>
+      </div>
+      <div th:unless="${perfil.id}== ${perfilFeed.id} " class="btn-group " role="group">
+        <div th:if="${invitar}">
+          <form th:action="@{/invitaciones/invitar}" method="post">
+            <input type="hidden" name="idRemitente" th:value="${perfil.id}">
+            <input type="hidden" name="idDestinatario" th:value="${perfilFeed.id}">
+            <button type="submit" class=" boton btn ">Añadir Amigo</button>
+          </form>
+        </div>
+        <div th:unless="${invitar}">
+          <div th:if="${amistad}">
+            <button type="button" class="btn boton" data-bs-toggle="modal" data-bs-target="#staticBackdropEliminarAmigo">Eliminar Amigo</button>
+            <div class="modal fade" id="staticBackdropEliminarAmigo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropEliminarAmigoLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropEliminarAmigoLabel">¿Est&aacute;s seguro de eliminar a tu amigo?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Si lo eliminas, ya no hay vuelta atr&aacute;s :O ...
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary me-auto" data-bs-dismiss="modal">Cerrar</button>
+                    <form th:action="@{/invitaciones/eliminar}" method="post">
+                      <input type="hidden" name="id" th:value="${invitacion.id}">
+                      <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div th:unless="${amistad}">
+            <form th:action="@{/invitaciones/rechazar}" method="POST">
+              <input type="hidden" name="id" th:value="${invitacion.id}">
+              <button type="submit" class=" boton btn ">Eliminar invitacion</button>
+            </form>
+          </div>
+        </div>
+        <!--crear mensaje que ya se envio solicitud-->
+      </div>
+    </div>
+  </div>
+  <!-- FIN PERFIL HEADER -->
+
+  <!-- INICIO FORMULARIO DE NUEVA PUBLICACION -->
+  <div th:fragment="crearPublicacion" th:if="${perfil.id}==${perfilFeed.id}">
+    <form th:action="@{/publicaciones/guardar-publicacion}" th:object="${publicacion}" method="post" enctype="multipart/form-data" class="bg-white d-flex flex-column mb-3">
+      <div class="row">
+        <div class="" id="divMensaje" style="height: 70px;">
+          <textarea th:field="*{descripcion}" name="descripcion" id="descripcion" rows="3" class="form-control form-control-sm border-0 h-100" placeholder="¿Que estas pensando?"></textarea>
+        </div>
+        <div class="" id="divFoto">
+          <img src="" alt="" class="img-fluid w-100 d-none" id="mostrarImagenASubir">
+        </div>
+      </div>
+      <div class="d-flex justify-content-between px-3 py-3 rounded-bottom" style="background-color: #EAEDED;">
+        <input type="hidden" name="id" id="id" th:field="${perfil.id}">
+        <label for="foto" id="labelFoto" class="btn btn-sm btn-warning"> <img th:src="@{/iconos/image.svg}">FOTO</label>
+        <input type="file" name="foto" id="foto" th:field="*{foto}" accept="image/*" hidden>
+        <button type="submit" class="btn btn-sm btn-warning">Publicar</button>
+      </div>
+    </form>
+    <script>  /* Script para cambiar automaticamente los tamaños de los contenedores de foto y texto */
+      document.getElementById('foto').addEventListener('change', mostrarNombreFoto, false);
+      function mostrarNombreFoto() {
+        document.getElementById('divMensaje').setAttribute('class','col-10');
+        document.getElementById('divFoto').setAttribute('class','col-2');
+      }
+    </script>
+  </div>
+  <!-- FIN FORMULARIO DE NUEVA PUBLICACION -->
+
+  <!-- INICIO PUBLICACIONES -->
+  <div th:fragment="publicaciones">
+    <!-- Sin publicaciones -->
+    <div th:if="${publicaciones.isEmpty()}">
+      <p class="fs-5">No tiene Publicaciones</p>
+    </div>
+    <!-- Publicacion -->
+    <div th:unless="${publicaciones.isEmpty()}" th:each="publicacion : ${publicaciones}" class="card text-center mb-3 border border-warning">
+      <div class="card-header clearfix">
+        <!-- Foto usuario -->
+        <div class="float-start">
+          <div th:if="${publicacion.perfil.foto != null}" class="">
+            <img th:src="${publicacion.perfil.foto}" alt="Perfil" id="fotoPerfil" class="img-fluid rounded-circle" width="50">
+          </div>
+          <div th:unless="${publicacion.perfil.foto != null}" class="">
+            <img th:src="@{/foto/FotoPorDefecto.jpg}" class="img-fluid rounded-circle" width="50">
+          </div>
+        </div>
+        <!-- Nombre usuario -->
+        <div class="float-start ms-2">
+          <h5 class="mt-1 mb-0 text-capitalize" th:text="|${publicacion.perfil.nombre} ${publicacion.perfil.apellido}|"></h5>
+          <p class="text-muted my-0" th:text="${#dates.format(publicacion.fechaDePublicacion, 'dd/MM/yyyy HH:mm')}"></p>
+        </div>
+        <!-- Boton editar -->
+        <div class="d-flex justify-content-end" th:if="${publicacion.perfil.id} == ${perfil.id}">
+          <a type="submit" class="text-success py-1 " th:href="@{/publicaciones/editar/__${publicacion.id}__}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" /><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" /></svg>
+          </a>
+          <button class="btn btn-sm text-danger " data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" th:onclick="|eliminarModales('${publicacion.id}');|">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" /><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" /></svg>
+          </button>
+        </div>
+      </div>
+      <!-- Foto de la publicacion -->
+      <div th:if="${publicacion.foto != null}" class="">
+        <img th:src="@{|/obtener-foto/${publicacion.foto}|}" alt="" id="fotoPublicacion" class="card-img-top img-fluid w-75 mx-auto">
+      </div>
+      <!-- Texpo de publicacion -->
+      <div class="card-body">
+        <p class="card-text text-start" th:text="${publicacion.descripcion}"></p>
+        <hr class="w-75 mx-auto mb-0 mt-2 text-muted">
+      </div>
+      <!-- Comentarios -->
+      <div class="card-footer">
+        <!-- Sin comentarios -->
+        <div th:if="${publicacion.comentarios.isEmpty()}"></div>
+        <!-- Con comentarios -->
+        <div th:unless="${publicacion.comentarios.isEmpty()}">
+          <div th:each="comentario : ${publicacion.comentarios}">
+            <div th:if="${comentario.fechaDeBaja} == null">
+              <ul class="list-group list-group-flush w-100">
+                <!-- Comentario -->
+                <li class="list-group-item clearfix bg-light ">
+                  <div class=" d-flex justify-content-between">
+                    <p class="mb-0 text-start fw-bold" th:text="|${comentario.perfil.nombre} ${comentario.perfil.apellido}|"></p>
+                    <div class="d-flex align-items-center">
+                      <p class="text-muted my-0 ms-auto" th:text="${#dates.format(comentario.fechaDeComentario, 'dd/MM/yyyy HH:mm')}"></p>
+                      <button class="btn btn-sm text-danger " th:if="${comentario.perfil.id} == ${perfil.id}" data-bs-toggle="modal" data-bs-target="#modalComentario" type="button" th:onclick="|eliminarModalesComentario('${comentario.id}');|">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" /><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center ">
+                    <img th:if="${comentario.perfil.foto != null}" th:src="${comentario.perfil.foto}" width="40" id="fotoPerfil" class="img-fluid rounded-circle flex-shrink-1 ">
+                    <img th:unless="${comentario.perfil.foto != null}" th:src="@{/foto/FotoPorDefecto.jpg}" width="40" id="fotoPerfil" class="img-fluid rounded-circle flex-shrink-1 ">
+                    <p th:utext="${#strings.replace(comentario.descripcion,'&#10;','&lt;br&gt;')}" class="my-0 text-start fw-light lh-1 ms-2 pe-5 w-100 "></p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- Publicar comentario -->
+        <div class="list-group-item d-flex align-items-center " th:if="${amistad}">
+          <div class="flex-shrink-1 ">
+            <img th:if="${perfil.foto != null}" th:src="${perfil.foto}" width="40" id="fotoPerfil" class="img-fluid rounded-circle">
+            <img th:unless="${perfil.foto != null}" th:src="@{/foto/FotoPorDefecto.jpg}" width="40" id="fotoPerfil" class="img-fluid rounded-circle">
+          </div>
+          <div class="w-100 ms-3 ">
+            <form th:action="@{/comentario/crear-comentario}" th:object="${comentario}" method="post" enctype="multipart/form-data" class="bg-white d-flex " th:if="@{amistad}">
+              <textarea th:field="*{descripcion}" name="descripcion" id="descripcion" rows="2" class="form-control form-control-sm border-0" placeholder="Agregar comentario"></textarea>
+              <input type="hidden" name="idPerfil" id="id" th:value="${perfil.id}">
+              <input type="hidden" name="idPublicacion" id="id" th:value="${publicacion.id}">
+              <button type="submit" class="btn btn-sm btn-warning my-2 ms-1">Comentar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- Modal publicacion -->
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Estas Seguro de Eliminar la Publicacion
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Si lo eliminas, ya no hay vuelta atr&aacute;s :O ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancelar</button>
+              <form class="px-3 rounded-bottom" method="post" id="formularioEliminar">
+                <button type="submit" class="btn btn-danger">eliminar </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal comentario -->
+      <div class="modal fade" id="modalComentario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modalComentarioLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalComentarioLabel">Estas Seguro de Eliminar comentario </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Si lo eliminas, ya no hay vuelta atr&aacute;s :O ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancelar</button>
+              <form class="px-3 rounded-bottom" method="post" id="formularioElimarComentario">
+                <button type="submit" class="btn btn-danger">eliminar </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>  /* Script para eliminar publicaciones y comentarios */
+      function eliminarModales(id) {
+        var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), { keyboard: true });
+        document.getElementById('formularioEliminar').setAttribute("action", "/publicaciones/eliminar/" + id);
+      }
+      function eliminarModalesComentario(id) {
+        var myModal = new bootstrap.Modal(document.getElementById('modalComentario'), { keyboard: true });
+        document.getElementById('formularioElimarComentario').setAttribute("action", "/comentario/eliminar/" + id);
+      }
+    </script>
+  </div>
+  <!-- FIN PUBLICACIONES -->
+
+  <!-- INICIO ERRORES -->
+  <div class="" th:fragment="errores">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error}">
+      <strong>¡Error!</strong> <span th:text="${error}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+  <!-- FIN ERRORES -->
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Rodrigo Olivera, Cristian Solis, Celeste Miranda y Astor Vargas">
+  <meta name="description" content="">
+  <link rel="shortcut icon" th:href="@{/iconos/iconoEgg.svg}" type="image/x-icon">
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <title>Rol - Listado</title>
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+    .flotante {
+      position: fixed;
+      bottom: 70px;
+      right: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <div th:replace="fragments :: header"></div>
+  <main>
+    <div class="container mt-5 ">
+      <h1 style="color:rgb(0, 0, 0)">Listado de Perfiles</h1>
+      <hr class="mb-5" />
+      <div th:if="${mensaje != null}" class="alert alert-success" th:text="${mensaje}"></div>
+      <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+      <div class="table-responsive">
+        <table class="table table-hover table-sm table-bordered align-middle">
+          <thead class="table-secondary text-center">
+            <tr>
+              <th class="col-md-1 ps-2" scope="col"></th>
+              <th class="col-md-1 ps-2" scope="col">Nombre</th>
+              <th class="col-md-1 ps-2" scope="col">Rol</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center">
+                <img th:if="${perfil2.foto != null}" th:src="${perfil2.foto}" alt="Perfil" width="40" height="40" id="fotoPerfil" class="rounded-circle me-2">
+                <img th:unless="${perfil2.foto != null}" th:src="@{/foto/FotoPorDefecto.jpg}" alt="mdo" width="40" height="40" id="fotoPerfil" class="rounded-circle me-2">
+              </td>
+              <td class="col-md-3 px-md-2" style="color:rgb(0, 0, 0)" th:text="|${perfil2.nombre} ${perfil2.apellido}|"></td>
+              <td class="col-md-3 px-md-2" style="color:rgb(0, 0, 0)">
+                <form th:action="@{/perfil/editarRol}" th:object="${perfil2}" method="post" class="d-flex align-items-center justify-content-center">
+                  <input type="hidden" name="id" th:value="${perfil2.id}">
+                  <select class="form-select form-select-lg" id="rol" name="nombre" th:value="*{usuario.rol.nombre}">
+                    <option th:each="rol : ${roles}" th:value="${rol.nombre}" th:text="${rol.nombre}"></option>
+                  </select>
+                  <button class="btn btn-warning btn-lg ms-2" type="submit">Guardar</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  <!-- INICIO FOOTER -->
+  <div th:replace="fragments :: footer"></div>
+  <!-- FIN FOOTER -->
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

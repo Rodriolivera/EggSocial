@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Rodrigo Olivera, Cristian Solis, Celeste Miranda y Astor Vargas">
+  <meta name="description" content="">
+  <link rel="shortcut icon" th:href="@{/iconos/iconoEgg.svg}" type="image/x-icon">
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/css/signin.css}" rel="stylesheet">
+  <title th:text="|${title} - SocialEgg|"></title>
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="text-center">
+  <main class="form-signin">
+    <form th:action="@{/signup-post}" method="post" class="needs-validation" novalidate>
+      <img class="mb-4" th:src="@{/iconos/iconoEgg.svg}" alt="" width="72" height="57">
+      <h1 class="h3 mb-3 fw-normal">Formulario de Registro EggSocial</h1>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error}">
+        <strong>¡Error!</strong> <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="email" name="correo" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+        <label for="floatingInput">Correo</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" name="clave" class="form-control" id="floatingPassword" placeholder="Password1" required>
+        <label for="floatingPassword">Ingrese Contraseña</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" name="clave2" class="form-control" id="floatingPassword" placeholder="Password2" required>
+        <label for="floatingPassword">Repetir Contraseña</label>
+      </div>
+      <button class="btn-yellow" type="submit" style="margin-bottom: 10px;">Guardar</button>
+  </main>
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/form-validation.js}"></script>
+</body>
+
+</html>

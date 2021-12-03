@@ -1,0 +1,74 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+.btn-outline, .btn-outline-sm, .btn-yellow, .give-egg-button, 
+.step-container .onboarding-form .btn-next-wizard,
+.student-heading-container .student-data .rest-info 
+.qualify-block .action-btn .btn-qualify,
+.user-action-reassign .btn-reassign, .user-action-rubrica 
+.qualify-block .btn-qualify{
+  background: #ffcd00;
+  color: #37474f;
+  padding: 20px 85px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 4px solid #ffcd00;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+.btn-outline, .btn-outline-sm, .btn-gray, .give-egg-button, 
+.step-container .onboarding-form .btn-next-wizard,
+.student-heading-container .student-data .rest-info 
+.qualify-block .action-btn .btn-qualify,
+.user-action-reassign .btn-reassign, .user-action-rubrica 
+.qualify-block .btn-qualify{
+  background: #3d3c39;
+  color: #ffffff;
+  padding: 20px 85px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 4px solid #5a5959;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}

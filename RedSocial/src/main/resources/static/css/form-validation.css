@@ -1,0 +1,21 @@
+.container {
+  max-width: 960px;
+}
+
+
+.btn-outline, .btn-outline-sm, .btn-yellow, .give-egg-button, 
+.step-container .onboarding-form .btn-next-wizard,
+.student-heading-container .student-data .rest-info 
+.qualify-block .action-btn .btn-qualify,
+.user-action-reassign .btn-reassign, .user-action-rubrica 
+.qualify-block .btn-qualify{
+  background: #ffcd00;
+  color: #37474f;
+  padding: 20px 85px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 4px solid #ffcd00;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}

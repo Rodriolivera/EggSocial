@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Rodrigo Olivera, Cristian Solis, Celeste Miranda y Astor Vargas">
+  <meta name="description" content="">
+  <link rel="shortcut icon" th:href="@{/iconos/iconoEgg.svg}" type="image/x-icon">
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <title>Rol - Listado</title>
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+    .flotante {
+      position: fixed;
+      bottom: 70px;
+      right: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <div th:replace="fragments :: header"></div>
+  <main>
+    <div class="container mt-5 ">
+      <h1 style="color:rgb(0, 0, 0)">Listado de Perfiles</h1>
+      <hr class="mb-5" />
+      <div th:if="${perfiles.isEmpty()}">
+        <h5 style="color:rgb(0, 0, 0)">Todavía no hay ningun perfil cargado. </h5>
+      </div>
+      <div th:if="${mensaje != null}" class="alert alert-success" th:text="${mensaje}"></div>
+      <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+      <div class="table-responsive" th:unless="${perfiles.isEmpty()}">
+        <table class="table table-hover table-sm table-bordered">
+          <thead class="table-secondary text-center">
+            <tr>
+              <th class="col-md-1 ps-2" scope="col"></th>
+              <th class="col-md-1 ps-2" scope="col">Nombre</th>
+              <th class="col-md-1 ps-2" scope="col">Rol</th>
+              <th class="col-md-1 ps-2" scope="col">Estado</th>
+              <th class="col-md-1 ps-2" scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="p : ${perfiles}">
+              <td class="text-center"><img th:if="${p.foto != null}" th:src="${p.foto}" alt="Perfil" width="40" height="40" id="fotoPerfil" class="rounded-circle me-2">
+                <img th:unless="${p.foto != null}" th:src="@{/foto/FotoPorDefecto.jpg}" alt="mdo" width="40" height="40" id="fotoPerfil" class="rounded-circle me-2">
+              </td>
+              <td class="col-md-3 px-md-2" style="color:rgb(0, 0, 0)" th:text="|${p.nombre} ${p.apellido}|"></td>
+              <td class="col-md-3 px-md-2" style="color:rgb(0, 0, 0)" th:text="${p.usuario.rol.nombre} " id="test"></td>
+              <td class="col-md-3 px-md-2" style="color:rgb(0, 0, 0)">
+                <span th:if="${p.fechaDeBaja ==null}">Activo</span>
+                <span th:unless="${p.fechaDeBaja ==null}">Inactivo</span>
+              </td>
+              <td>
+                <div class="d-flex justify-content-center" th:if="${p.fechaDeBaja ==null}">
+                  <a type="submit" id="success" class="text-success py-1 " th:href="@{/perfil/editarRolPerfil/__${p.id}__}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" /><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" /></svg>
+                  </a>
+                  <button class="btn btn-sm text-danger " data-bs-toggle="modal" data-bs-target="#modalPerfil" type="button" th:onclick="|eliminarPerfil('${p.id}');|" th:unless="${p.usuario.rol.nombre} == 'ADMIN'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" /><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" /></svg>
+                  </button>
+                </div>
+                <div class="d-flex justify-content-center" th:unless="${p.fechaDeBaja ==null}">
+                  <form method="post" th:action="@{/perfil/activar}" th:object="${p}">
+                    <input type="hidden" name="id" th:value="${p.id}">
+                    <button type="submit" class="btn btn- sm text-success " id="">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16"><path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" /><path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" /></svg>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal fade" id="modalPerfil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalComentarioLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalPerfilLabel">Estas Seguro de Eliminar comentario </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            si eliminas no hay vuelta atras :O ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancelar</button>
+            <form class="px-3 rounded-bottom" method="post" id="formularioElimarPerfil">
+              <button type="submit" class="btn btn-danger">eliminar </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div th:replace="fragments :: footer"></div>
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  <script>
+    console.log(roles)
+    /*function eliminarPerfil(id,roles) {
+      var myModal = new bootstrap.Modal(document.getElementById('modalPerfil'), { keyboard: true });
+      document.getElementById('formularioElimarPerfil').setAttribute("action", "/perfil/eliminar/" + id);
+    } */
+    function eliminarPerfil(id, roles) {
+      var myModal = new bootstrap.Modal(document.getElementById('modalPerfil'), { keyboard: true });
+      document.getElementById('formularioElimarPerfil').setAttribute("action", "/perfil/eliminar/" + id);
+    }
+  </script>
+</body>
+
+</html>

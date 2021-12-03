@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Rodrigo Olivera, Cristian Solis, Celeste Miranda y Astor Vargas">
+  <meta name="description" content="">
+  <link rel="shortcut icon" th:href="@{/iconos/iconoEgg.svg}" type="image/x-icon">
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <title>Perfil</title>
+  <style>
+    .flotante {
+      position: fixed;
+      bottom: 70px;
+      right: 30px;
+      z-index: 50000;
+    }
+    main {
+      margin-bottom: 90px;
+    }
+    .boton {
+      background-color: transparent;
+      color: #696565;
+    }
+    .boton:hover {
+      border-bottom-color: #2dc3e8;
+    }
+  </style>
+</head>
+
+<body>
+  <div th:replace="fragments :: header"></div>  <!-- HEADER -->
+  <div th:replace="fragments ::perfil-header"></div>  <!-- PERFIL HEADER -->
+  <main class="container">
+    <h2 class="text-center">Editar Publicacion</h2>
+    <hr class="mb-4" />
+    <div th:if="${perfil.id}==${perfilFeed.id}">
+      <form th:action="@{/publicaciones/guardar-modificado}" th:object="${publicacion}" method="post" enctype="multipart/form-data" class="bg-white d-flex flex-column mb-3">
+        <div class="card text-center mb-3 border border-warning">
+          <div class="card-header clearfix">
+            <!-- quien es el usuario -->
+            <div class="float-start">
+              <div th:if="${publicacion.perfil.foto != null}" class="">
+                <img th:src="${publicacion.perfil.foto}" alt="Perfil" id="fotoPerfil" class="img-fluid rounded-circle" width="40">
+              </div>
+              <div th:unless="${publicacion.perfil.foto != null}" class="">
+                <img th:src="@{/foto/FotoPorDefecto.jpg}" class="img-fluid rounded-circle" width="40">
+              </div>
+            </div>
+            <div class="float-start ms-2">
+              <h5 class="mt-1 mb-0 text-capitalize" th:text="|${publicacion.perfil.nombre} ${publicacion.perfil.apellido}|"> </h5>
+              <p class="text-muted my-0" th:text="${#dates.format(publicacion.fechaDePublicacion, 'dd/MM/yyyy HH:mm')}"></p>
+            </div>
+          </div>
+         
+          <div th:if="${publicacion.foto != null}" class="">
+            <label for="foto" id="labelFoto" class="btn ">
+              <img th:src="@{|/obtener-foto/${publicacion.foto}|}" alt="" id="mostrarImagenASubir"class="card-img-top img-fluid w-75 mx-auto">
+              <input type="hidden" name="id" id="id" th:field="${publicacion.id}">
+              <input type="file" name="foto" id="foto" th:field="*{foto}" accept="image/*" hidden>
+              
+            </label>
+            
+          </div>
+          <div th:unless="${publicacion.foto != null}" class="">
+
+            <img th:src="@{|/obtener-foto/${publicacion.foto}|}" alt="" id="mostrarImagenASubir"class="card-img-top img-fluid w-75 mx-auto ">
+            <input type="hidden" name="id" id="id" th:field="${publicacion.id}">
+            <label for="foto" id="labelFoto" class="btn btn-sm btn-warning "> <img th:src="@{/iconos/image.svg}">CARGAR FOTO </label>
+            <input type="file" name="foto" id="foto" th:field="*{foto}" accept="image/*" hidden>
+          </div>
+          <!-- si hay imagen ponerla -->
+          <div class="card-body">
+            <!-- texto y reacciones -->
+         
+            <textarea th:field="*{descripcion}" name="descripcion" id="descripcion" rows="3" class="form-control form-control-sm border-0" placeholder="¿Que estas pensando?"></textarea>
+            
+          </div>
+          <button type="submit" class="btn btn-warning p-3">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <div th:replace=" fragments :: footer"></div>  <!-- FOOTER -->
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+  <script th:src="@{/js/croppr.min.js}"></script>
+  <script>  /* Script para mostrar foto que se va a subir */
+    const inputImage = document.querySelector('#foto');  // Input File
+    inputImage.addEventListener('change', abrirEditor, false);
+    let urlImage = undefined;
+
+    function abrirEditor(e) {
+        document.getElementById('mostrarImagenASubir').setAttribute('class','img-fluid w-50');
+        urlImage = URL.createObjectURL(e.target.files[0]);  // Obtiene la imagen
+        document.querySelector('#mostrarImagenASubir').setAttribute('src', urlImage);
+      }
+  </script>
+</body>
+
+</html>

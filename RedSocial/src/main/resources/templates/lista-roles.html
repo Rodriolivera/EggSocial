@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Rodrigo Olivera, Cristian Solis, Celeste Miranda y Astor Vargas">
+  <meta name="description" content="">
+  <link rel="shortcut icon" th:href="@{/iconos/iconoEgg.svg}" type="image/x-icon">
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <title>Rol - Listado</title>
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+    .flotante {
+      position: fixed;
+      bottom: 70px;
+      right: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <div th:replace="fragments :: header"></div>
+  <main>
+    <div class="container mt-5 ">
+      <h1 style="color:rgb(0, 0, 0)">Listado de roles</h1>
+      <hr class="mb-5" />
+      <div th:if="${roles.isEmpty()}">
+        <h5 style="color:rgb(0, 0, 0)">Todavía no hay ningun usuario cargado. </h5> <a th:href="@{/roles/crear-rol}">Crear un Rol.</a>
+      </div>
+      <div th:if="${mensaje != null}" class="alert alert-success" th:text="${mensaje}"></div>
+      <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+      <div class="table-responsive" th:unless="${roles.isEmpty()}">
+        <table class="table table-hover table-sm table-bordered">
+          <thead class="table-secondary text-center">
+            <tr>
+              <th class="col-md-1 ps-2" scope="col">id</th>
+              <th class="col-md-3 px-md-2" scope="col">Nombre</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="rol : ${roles}">
+              <th class="col-md-1 px-md-2 text-center" scope="row" style="color:rgb(0, 0, 0)" th:text="${rol.id}"></th>
+              <td class="col-md-3 px-md-2" style="color:rgb(0, 0, 0)" th:text="${rol.nombre}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  <div th:replace="fragments :: footer"></div>
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

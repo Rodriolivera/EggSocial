@@ -1,0 +1,4 @@
+@Column(unique = true)
+private String nombre;
+
+en el rol
