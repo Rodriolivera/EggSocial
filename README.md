@@ -13,16 +13,25 @@ El usuario con rol "Admin", puede deshabilitar/habilitar perfiles y editar rol d
 ## Herramientas Utilizadas
 
 SPRING BOOT
+
 MYSQL
+
 HTML
+
 CSS
+
 JAVASCRIP
+
 BOOTSTRAP
+
 THYMELEAF
 
 ## Autores
 
 Miranda Celeste
+
 Olivera Rodrigo
+
 Solís Cristian
+
 Vargas Astor
